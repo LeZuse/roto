@@ -20,8 +20,8 @@
 var path     = require('path'),
     fs       = require('fs'),
     roto     = require('../lib/roto.js'),
-    optimist = require('optimist'),
-    pkg      = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    colorize = require('../lib/colorize.js'),
+    optimist = require('optimist');
 
 var argv = optimist.usage('Usage: $0 [target] [options]').argv;
 
@@ -50,7 +50,7 @@ for (var i = 1; i < argv._.length; i++) {
 var projectFile = process.cwd() + '/build.js';
 var existsSync = fs.existsSync || path.existsSync;
 if (!existsSync(projectFile)) {
-	process.stderr.write('"build.js" project file not found.\n');
+	process.stderr.write(colorize('ERROR: ', 'red') + '"build.js" project file not found.\n');
 	process.exit(1);
 }
 
@@ -60,32 +60,37 @@ require(projectFile)(roto);
 // ------------------------------------------------------------------------------------
 
 if (options['help']) {
-	process.stdout.write(optimist.help());
-	process.stdout.write('Available Targets:\n\n');
+	var print_target = function(name, options) {
+		var selected = name === roto.defaultTarget;
+		var bullet   = selected ? '■' : '□';
+		process.stdout.write(colorize(' ' + bullet, 'gray') + ' ' + name);
+		if (selected) {
+			process.stdout.write(colorize(' (default)', 'blue'));
+		}
+		if (options && options.description) {
+			process.stdout.write(colorize(': ' + options.description + '', 'gray'));
+		}
+		process.stdout.write('\n');
+	};
 
-	// all
-	process.stdout.write('   - all');
-	if ('all' === roto.defaultTarget) {
-		process.stdout.write(' (default)');
-	}
-	process.stdout.write('\n');
-
-	// defined targets
+	// defined targets + 'all'
+	process.stdout.write('\n' + optimist.help());
+	process.stdout.write(colorize('Available Targets:\n', 'white'));
+	print_target('all');
 	for (var key in roto._project.targets) {
 		if (roto._project.targets.hasOwnProperty(key)) {
-			process.stdout.write('   - ' + roto._project.targets[key].name);
-			if (key === roto.defaultTarget) {
-				process.stdout.write(' (default)');
-			}
-			process.stdout.write('\n');
+			print_target(key, roto._project.targets[key].options);
 		}
 	}
-	process.stdout.write('\n');
 
-	return;
+	process.stdout.write('\nFor more information, find the documentation at:\n');
+	process.stdout.write(colorize('http://github.com/diy/roto', 'underline') + '\n\n');
+	process.exit(0);
 }
 
 // execute build
 // ------------------------------------------------------------------------------------
 
-roto.run(target, options);
+roto.run(target, options, function(success) {
+	process.exit(success !== false ? 0 : 1);
+});

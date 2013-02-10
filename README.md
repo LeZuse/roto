@@ -137,12 +137,12 @@ var roto = require('roto');
 require('./build.js')(roto);
 
 // build a single target
-roto.run('target-name', {}, function() {
+roto.run('target-name', {}, function(success) {
 	console.log('Build complete!');
 });
 
 // build a few targets
-roto.run(['target-name', 'whatevs'], {}, function() {
+roto.run(['target-name', 'whatevs'], {}, function(success) {
 	console.log('Build complete!');
 });
 ```
