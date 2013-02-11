@@ -38,7 +38,7 @@ module.exports = function(roto) {
 
 		// do something custom
 		roto.addTask(function(callback) {
-			roto.notice('This isn\'t using a predefined task. Saweet.');
+			console.log('This isn\'t using a predefined task. Saweet.');
 			callback();
 		});
 	});
@@ -84,28 +84,15 @@ roto.addTask('target:clientside-build', options);
 
 ## Odds & Ends
 
-### Console Output
-
-Two methods are provided for writing to the console: `roto.notice` and `roto.error`. **Note:** neither of these methods add line breaks to the end of your string like `console.log` does, so don't forget them if you want them.
-
-```javascript
-// (writes to process.stdout)
-roto.notice('Yo\n');
-// (writes to process.stderr)
-roto.error('Something borked.\n');
-```
-
-An optional second argument is `color` (described below).
-
-#### Colorizing Strings
+### Colorizing Strings
 
 A utility for colorizing strings comes bundled with roto.
 
 ```javascript
 var colorize = roto.colorize;
 
-roto.error(colorize('ERROR:', 'red') + ' Something borked.');
-roto.notice(colorize('SUCCESS:', 'green') + ' Something went right!');
+console.error(colorize('ERROR:', 'red') + ' Something borked.');
+console.log(colorize('SUCCESS:', 'green') + ' Something went right!');
 ```
 
 The available colors are currently: `red`, `yellow`, `green`, and `white` (bold).
