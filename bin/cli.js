@@ -23,26 +23,9 @@ var path     = require('path'),
     colorize = require('../lib/colorize.js'),
     optimist = require('optimist');
 
-var argv = optimist.usage('Usage: $0 [target] [options]').argv;
+optimist.usage('Usage: $0 [target] [options]')
 
-// selected build target
-// ------------------------------------------------------------------------------------
-
-var target = argv._.length ? argv._[0] : null;
-
-// extract global options
-// ------------------------------------------------------------------------------------
-
-var blacklist = ['_', '$0'];
-var options = {};
-for (var key in argv) {
-	if (argv.hasOwnProperty(key) && blacklist.indexOf(key) === -1) {
-		options[key] = argv[key];
-	}
-}
-for (var i = 1; i < argv._.length; i++) {
-	options[argv._[i]] = true;
-}
+var i, n, key;
 
 // load project information
 // ------------------------------------------------------------------------------------
@@ -55,6 +38,22 @@ if (!existsSync(projectFile)) {
 }
 
 require(projectFile)(roto);
+
+// extract global options & target
+// ------------------------------------------------------------------------------------
+
+var argv = optimist.argv;
+var target = argv._.length ? argv._[0] : null;
+var blacklist = ['_', '$0'];
+var options = {};
+for (key in argv) {
+	if (argv.hasOwnProperty(key) && blacklist.indexOf(key) === -1) {
+		options[key] = argv[key];
+	}
+}
+for (i = 1; i < argv._.length; i++) {
+	options[argv._[i]] = true;
+}
 
 // display help
 // ------------------------------------------------------------------------------------
@@ -73,8 +72,9 @@ if (options['help']) {
 		process.stdout.write('\n');
 	};
 
-	// defined targets + 'all'
 	process.stdout.write('\n' + optimist.help());
+
+	// defined targets + 'all'
 	process.stdout.write(colorize('Available Targets:\n', 'white'));
 	print_target('all');
 	for (var key in roto._project.targets) {
