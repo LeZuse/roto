@@ -80,6 +80,11 @@ Syncing a folder to S3 is really easy using the `s3` task. Provide the task with
 		<td valign="top"><code>bool</code></td>
 		<td valign="top">Force all files to be updated (even if they haven't changed).</td>
 	</tr>
+	<tr>
+		<td valign="top"><code>file_headers</code></td>
+		<td valign="top"><code>object</code></td>
+		<td valign="top">An object mapping file patterns to a list of headers. If provided, "ttl" and "acl" are re-written to "Cache-Control" and "x-amz-acl", respectively.</td>
+	</tr>
 </table>
 
 ## Examples
@@ -92,6 +97,10 @@ roto.addTask('s3', {
 	secret: '*************************',
 	bucket: 'org-static',
 	destination: '/',
-	ttl: 32140800
+	ttl: 32140800,
+	file_headers: {
+		'*.gif': {ttl: 3600},
+		'*.p12': {acl: 'private'}
+	}
 });
 ```
