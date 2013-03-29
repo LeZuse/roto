@@ -41,6 +41,11 @@ Syncing a folder to S3 is really easy using the `s3` task. Provide the task with
 		<td valign="top">The path to the folder in the bucket to place the files. Default: "/"</td>
 	</tr>
 	<tr>
+		<td valign="top"><code>files</code></td>
+		<td valign="top"><code>string</code> (or <code>array</code> of strings)</td>
+		<td valign="top">Paths of files within <code>folder</code> to be synced. Supports basic wildcards / <a href="http://www.linuxjournal.com/content/bash-extended-globbing" target="_blank">glob syntax</a>.</td>
+	</tr>
+	<tr>
 		<td valign="top"><code>ignore</code></td>
 		<td valign="top"><code>string</code> (or <code>array</code> of strings)</td>
 		<td valign="top">Any matching paths in `folder` will be ignored. Supports glob syntax.</td>
@@ -89,18 +94,62 @@ Syncing a folder to S3 is really easy using the `s3` task. Provide the task with
 
 ## Examples
 
+### Entire Folder
+
 ```javascript
+// sync entire folder
 roto.addTask('s3', {
 	folder: 'public',
-	ignore: ['*.less'],
+	ignore: ['**/*.less'],
 	key: '*****',
 	secret: '*************************',
 	bucket: 'org-static',
 	destination: '/',
 	ttl: 32140800,
 	file_headers: {
-		'*.gif': {ttl: 3600},
-		'*.p12': {acl: 'private'}
+		'**/*.gif': {ttl: 3600},
+		'**/*.p12': {acl: 'private'}
 	}
 });
+
+### Individual Files
+
+```javascript
+roto.addTask('s3', {
+	folder: '/',
+	files: '**/*.js',
+	ignore: ['**/*.min.js'],
+	key: '*****',
+	secret: '*************************',
+	bucket: 'org-static',
+	destination: '/',
+	ttl: 32140800,
+	file_headers: {
+		'**/*.gif': {ttl: 3600},
+		'**/*.p12': {acl: 'private'}
+	}
+});
+
+// src/file.js -> org-static/src/file.js
+// src/lib/file.js -> org-static/src/lib/file.js
+```
+
+```javascript
+roto.addTask('s3', {
+	folder: '/src',
+	files: '**/*.js',
+	ignore: ['**/*.min.js'],
+	key: '*****',
+	secret: '*************************',
+	bucket: 'org-static',
+	destination: '/',
+	ttl: 32140800,
+	file_headers: {
+		'**/*.gif': {ttl: 3600},
+		'**/*.p12': {acl: 'private'}
+	}
+});
+
+// src/file.js -> org-static/file.js
+// src/lib/file.js -> org-static/lib/file.js
 ```
