@@ -21,6 +21,7 @@ A few common, useful tasks come built-in to roto.
 * [**dir-copy**](docs/task_dir-copy.md) — Copies a directory and its contents.
 * [**dir-move**](docs/task_dir-move.md) — Moves a directory and its contents.
 * [**dir-remove**](docs/task_dir-remove.md) — Deletes a directory and its contents.
+* [**template**](docs/task_template.md) — Generates a file from a template.
 
 ## Setting up a Project
 
