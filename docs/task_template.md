@@ -39,8 +39,7 @@ roto.addTask('template', {
 
 ```javascript
 roto.addTask('template', {
-	files  : ['src/config.xml'
-	output : 'build/config.xml',
+	files  : ['output/config.xml', 'output/readme.html']
 	data   : {version: '1.0.0'}
 });
 ```

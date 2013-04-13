@@ -1,8 +1,8 @@
 {
 	"name": "roto",
-	"description": "A no-nonsense build tool for Node.js projects.",
+	"description": "A no-nonsense node.js build tool.",
 	"keywords": ["build","cli","make","rake"],
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"author": "Brian Reavis <brian@thirdroute.com>",
 	"bin": {
 		"roto": "./bin/cli.js"
