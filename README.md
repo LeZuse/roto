@@ -63,6 +63,18 @@ roto.addTask('uglify', {
 });
 ```
 
+In more complicated builds, task options might need to be computed at execution time. This can be done by providing a function instead of an object:
+
+```javascript
+roto.addTask('uglify', function() {
+	return {
+		files  : ['js/*.js'],
+		ignore : ['js/*.min.js'],
+		output : 'js/combined.min.js'
+	}
+});
+```
+
 ### Adding Custom Tasks
 
 If there's something specific you need to do that doesn't have to do with a predefined task, simply use `roto.addTask(callback)`:
