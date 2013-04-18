@@ -33,7 +33,7 @@ Pre-compiles [LESS stylesheets](http://lesscss.org/) to a raw CSS file.
 	<tr>
 		<td valign="top"><code>sourcemaps</code></td>
 		<td valign="top"><code>bool</code></td>
-		<td valign="top">If true the output will contain `@media --sass-debug-info` style sourcemaps. Must be using Chrome ~26 with **unminifed** output.</td>
+		<td valign="top">If true the output will contain <code>@media --sass-debug-info</code> style sourcemaps. Must be using Chrome ~26 with <strong>unminifed</strong> output.</td>
 	</tr>
 	<tr>
 		<td valign="top"><code>banner</code></td>

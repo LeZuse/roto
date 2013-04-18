@@ -4,7 +4,6 @@ Minification of client-side javascript is a breeze with the built-in `uglify` ta
 
 ## Options
 
-
 <table>
 	<tr>
 		<th>Option</th>
