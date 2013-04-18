@@ -31,6 +31,11 @@ Pre-compiles [LESS stylesheets](http://lesscss.org/) to a raw CSS file.
 		<td valign="top">Path of the output file.</td>
 	</tr>
 	<tr>
+		<td valign="top"><code>sourcemaps</code></td>
+		<td valign="top"><code>bool</code></td>
+		<td valign="top">If true the output will contain `@media --sass-debug-info` style sourcemaps. Must be using Chrome ~26 with **unminifed** output.</td>
+	</tr>
+	<tr>
 		<td valign="top"><code>banner</code></td>
 		<td valign="top"><code>string</code></td>
 		<td valign="top">Raw text appended to the top of the generated output. Useful for copyright notices.</td>
