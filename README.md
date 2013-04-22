@@ -89,10 +89,20 @@ roto.addTask(function(callback) {
 
 ### Executing Other Targets
 
-In some cases, executing another target from the current target makes sense (e.g. a `deploy` target needing to run the `clientside-build` target first). To do this, use the following syntax:
+In some cases, executing another target from the current target makes sense (e.g. a "deploy" target needing to run the "clientside-build" target first). To do this, use the following syntax:
 
 ```javascript
 roto.addTask('target:clientside-build', options);
+```
+
+### Invoking Tasks Within Other Tasks
+
+Predefined tasks can be manually invoked using the "executeTask" method, like so:
+
+```javascript
+roto.addTask(function(callback) {
+	roto.executeTask('uglify', options, callback);
+});
 ```
 
 ## Odds & Ends
