@@ -17,21 +17,23 @@
  * @author Brian Reavis <brian@thirdroute.com>
  */
 
-var path     = require('path'),
-    fs       = require('fs'),
-    roto     = require('../lib/roto.js'),
-    colorize = require('../lib/colorize.js'),
-    optimist = require('optimist');
+var path     = require('path');
+var fs       = require('fs');
+var roto     = require('../lib/roto.js');
+var colorize = require('../lib/colorize.js');
+var optimist = require('optimist');
+
+var i, n, key;
+var argv, target, blacklist, options, print_target;
+var projectFile, existsSync;
 
 optimist.usage('Usage: $0 [target] [options]')
 
-var i, n, key;
-
 // load project information
-// ------------------------------------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var projectFile = process.cwd() + '/build.js';
-var existsSync = fs.existsSync || path.existsSync;
+projectFile = process.cwd() + '/build.js';
+existsSync  = fs.existsSync || path.existsSync;
 if (!existsSync(projectFile)) {
 	process.stderr.write(colorize('ERROR: ', 'red') + '"build.js" project file not found.\n');
 	process.exit(1);
@@ -40,12 +42,12 @@ if (!existsSync(projectFile)) {
 require(projectFile)(roto);
 
 // extract global options & target
-// ------------------------------------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var argv = optimist.argv;
-var target = argv._.length ? argv._[0] : null;
-var blacklist = ['_', '$0'];
-var options = {};
+argv = optimist.argv;
+target = argv._.length ? argv._[0] : null;
+blacklist = ['_', '$0'];
+options = {};
 for (key in argv) {
 	if (argv.hasOwnProperty(key) && blacklist.indexOf(key) === -1) {
 		options[key] = argv[key];
@@ -56,10 +58,10 @@ for (i = 1; i < argv._.length; i++) {
 }
 
 // display help
-// ------------------------------------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if (options['help']) {
-	var print_target = function(name, options) {
+	print_target = function(name, options) {
 		var selected = name === roto.defaultTarget;
 		var bullet   = selected ? '■' : '□';
 		process.stdout.write(colorize(' ' + bullet, 'gray') + ' ' + name);
@@ -77,7 +79,7 @@ if (options['help']) {
 	// defined targets + 'all'
 	process.stdout.write(colorize('Available Targets:\n', 'white'));
 	print_target('all');
-	for (var key in roto._project.targets) {
+	for (key in roto._project.targets) {
 		if (roto._project.targets.hasOwnProperty(key)) {
 			print_target(key, roto._project.targets[key].options);
 		}
@@ -89,7 +91,7 @@ if (options['help']) {
 }
 
 // execute build
-// ------------------------------------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 roto.run(target, options, function(success) {
 	process.exit(success !== false ? 0 : 1);
