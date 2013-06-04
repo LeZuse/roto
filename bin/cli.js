@@ -27,7 +27,21 @@ var i, n, key;
 var argv, target, blacklist, options, print_target;
 var projectFile, existsSync;
 
-optimist.usage('Usage: $0 [target] [options]')
+optimist.usage('Usage: $0 [target] [options]');
+
+argv = optimist
+	.options('c', {
+		alias: 'color',
+		boolean: true,
+		default: true
+	})
+	.argv;
+
+if (!argv.color) {
+	colorize = function(str) {return str;};
+	roto.options.colorize = false;
+}
+
 
 // load project information
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -44,7 +58,6 @@ require(projectFile)(roto);
 // extract global options & target
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-argv = optimist.argv;
 target = argv._.length ? argv._[0] : null;
 blacklist = ['_', '$0'];
 options = {};
